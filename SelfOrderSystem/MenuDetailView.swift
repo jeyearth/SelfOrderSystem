@@ -230,14 +230,13 @@ extension MenuDetailView {
                  // 5. 合計（単価 × 数量）
                  HStack {
                      Text("合計")
-                         .font(.title3.weight(.bold))
-                     Spacer()
+                         .font(.headline.weight(.bold))
                      Text("¥\(Int(currentItemTotalPrice))")
-                         .font(.largeTitle.weight(.heavy)) // 合計を一番目立たせる
-                         .foregroundColor(.accentColor) // 強調色
-                         .contentTransition(.numericText(value: currentItemTotalPrice))
-                         .animation(.default, value: currentItemTotalPrice)
+                         .font(.system(size: 32, weight: .heavy))
+                         .foregroundColor(.accentColor)
                  }
+                 .contentTransition(.numericText(value: currentItemTotalPrice))
+                 .animation(.default, value: currentItemTotalPrice)
             }
             .padding(.bottom, 8)
             .frame(maxWidth: .infinity, alignment: .leading)

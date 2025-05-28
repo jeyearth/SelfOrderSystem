@@ -65,9 +65,11 @@ struct MenuView: View {
                         .font(.title2.weight(.semibold))
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .background(Color.gray.opacity(0.2))
-
-
+//                        .background(Color.gray.opacity(0.2))
+                    
+                    Divider()
+                        .padding()
+                    
                     if order.items.isEmpty {
                         Spacer()
                         Image(systemName: "cart.badge.plus")
@@ -96,8 +98,11 @@ struct MenuView: View {
                                         Spacer()
                                         Text("x \(orderItem.quantity)")
                                             .padding(.horizontal, 20)
-                                        Text("¥\(Int(orderItem.totalPrice))")
-                                            .font(.headline)
+                                        (Text("¥")
+                                            .font(.title3.bold())
+                                        + Text("\(Int(orderItem.totalPrice))")
+                                            .font(.title.bold())
+                                         )
                                     }
                                 }
                                 .padding(.all, 10)
@@ -114,11 +119,17 @@ struct MenuView: View {
                     }
 
                     Divider()
+                        .padding()
                     VStack {
-                        Text("合計: ¥\(Int(order.totalAmount))") // Total
-                            .font(.title.weight(.bold))
-                            .padding(.vertical)
-                            .contentTransition(.numericText(value: order.totalAmount))
+                        
+                        (Text("合計: ¥ ")
+                            .font(.system(size: 30, weight: .semibold))
+                         + Text("\(Int(order.totalAmount))")
+                            .font(.system(size: 80, weight: .bold))
+                        )
+                        .contentTransition(.numericText(value: order.totalAmount))
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .padding()
 
                         Button(action: {
                             if !order.items.isEmpty {
@@ -126,7 +137,7 @@ struct MenuView: View {
                             }
                         }) {
                             Text("お会計へ進む") // Proceed to Checkout
-                                .font(.title3.weight(.semibold))
+                                .font(.title.weight(.semibold))
                                 .foregroundColor(.white)
                                 .padding()
                                 .frame(maxWidth: .infinity)
@@ -136,10 +147,11 @@ struct MenuView: View {
                         .disabled(order.items.isEmpty)
                         .padding([.horizontal, .bottom])
                     }
-                    .background(Color.gray.opacity(0.1))
+//                    .background(Color.gray.opacity(0.1))
                 }
                 .frame(width: geometry.size.width * 0.35) // Order summary takes 35%
                 .background(Color(UIColor.systemGray6))
+                
             }
         }
         .navigationTitle("メニュー") // Menu
