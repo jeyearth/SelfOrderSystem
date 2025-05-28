@@ -49,6 +49,7 @@ struct PaymentMethodSelectionView: View {
         .background(Color(UIColor.systemGroupedBackground).ignoresSafeArea())
         .navigationTitle("お支払い方法") // Payment Method
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true) 
         .toolbar {
              ToolbarItem(placement: .navigationBarLeading) {
                  Button { navigationPath.removeLast() } label: { // Go back to Menu
