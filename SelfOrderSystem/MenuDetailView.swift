@@ -37,7 +37,7 @@ struct MenuDetailView: View {
     
     var body: some View {
         NavigationView { // NavigationView provides a title bar for the sheet
-            ScrollView {
+            VStack {
                 VStack(spacing: 15) {
                     
                     GeometryReader{ geometry in
@@ -111,7 +111,7 @@ struct MenuDetailView: View {
                     //                        .font(.title2.weight(.bold))
                     //                        .padding(.vertical)
                 }
-                .padding()
+                .padding(20)
             }
             .navigationTitle("商品詳細") // Item Details
             .navigationBarTitleDisplayMode(.inline)
@@ -124,18 +124,11 @@ struct MenuDetailView: View {
                             Image(systemName: "xmark")
                             Text("キャンセル")
                         }
-                        .font(.headline)
+                        .font(.title3)
+                        .fontWeight(.bold)
                     }
                     
                 }
-                //                ToolbarItem(placement: .navigationBarTrailing) {
-                //                    Button("カートに追加") { // Add to Cart
-                //                        let finalSelectedOptions = Array(pickerSelections.values)
-                //                        order.add(menuItem: item, quantity: quantity, selectedOptions: finalSelectedOptions)
-                //                        dismiss() // Close the sheet
-                //                    }
-                //                    .fontWeight(.semibold)
-                //                }
             }
             .onAppear {
                 // Initialize picker selections
@@ -167,15 +160,86 @@ extension MenuDetailView {
             Image(item.imageName)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(height: 200)
+                .frame(height: 140)
+                .frame(width: 180)
+                .shadow(radius: 4)
             VStack {
                 Text(item.name)
                     .font(.headline)
-                Text("¥\(Int(item.price))")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(.green)
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
+            Divider()
+            
+            Spacer()
+            
+            VStack {
+                
+                // 1. 基本料金
+                 HStack {
+                     Text("基本料金")
+                     Spacer()
+                     Text("¥\(Int(item.price))")
+                         .fontWeight(.medium)
+                 }
+                 .font(.subheadline)
+
+                 // 2. オプション料金
+                 let calculatedOptionsPrice = pickerSelections.values.reduce(0) { $0 + $1.additionalPrice }
+                 HStack {
+                     Text("オプション料金")
+                     Spacer()
+                     Text("¥\(Int(calculatedOptionsPrice))")
+                         .fontWeight(.medium)
+                         .contentTransition(.numericText(value: calculatedOptionsPrice))
+                         .animation(.default, value: calculatedOptionsPrice)
+                 }
+                 .font(.subheadline)
+
+                 Divider()
+
+                 // 3. 小計（単価：基本料金 + オプション料金）
+                 let subtotalPerItem = item.price + calculatedOptionsPrice
+                 HStack {
+                     Text("小計（単価）")
+                         .fontWeight(.bold)
+                     Spacer()
+                     Text("¥\(Int(subtotalPerItem))")
+                         .fontWeight(.bold)
+                         .contentTransition(.numericText(value: subtotalPerItem))
+                         .animation(.default, value: subtotalPerItem)
+                 }
+                 .font(.subheadline) // 基本料金などと同じサイズ感で、太字で区別
+
+                 Divider()
+
+                 // 4. 数量
+                 HStack {
+                     Text("数量")
+                     Spacer()
+                     Text("\(quantity) 点")
+                         .fontWeight(.medium)
+                         .contentTransition(.numericText(value: Double(quantity))) // quantityもアニメーション対象に
+                         .animation(.default, value: quantity)
+                 }
+                 .font(.subheadline)
+
+                 Divider()
+                     .padding(.vertical, 4)
+
+                 // 5. 合計（単価 × 数量）
+                 HStack {
+                     Text("合計")
+                         .font(.title3.weight(.bold))
+                     Spacer()
+                     Text("¥\(Int(currentItemTotalPrice))")
+                         .font(.largeTitle.weight(.heavy)) // 合計を一番目立たせる
+                         .foregroundColor(.accentColor) // 強調色
+                         .contentTransition(.numericText(value: currentItemTotalPrice))
+                         .animation(.default, value: currentItemTotalPrice)
+                 }
+            }
+            .padding(.bottom, 8)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
@@ -187,27 +251,45 @@ extension MenuDetailView {
             
             Divider()
             
-            HStack {
-                Text("数量:") // Quantity
-                    .font(.title3.weight(.semibold))
-                Stepper("\(quantity)", value: $quantity, in: 1...20) // Max quantity 20
-                    .font(.title3)
-            }
-            
             Spacer()
             HStack {
-                Text("この商品の合計: ¥\(Int(currentItemTotalPrice))") // Subtotal for this item
-                //                    .font(.title2.weight(.bold))
-                    .padding(.vertical)
-                
+                Spacer()
+                HStack {
+                    Button {
+                        withAnimation {
+                            if quantity == 1 { return }
+                            quantity -= 1
+                        }
+                    } label: {
+                        Image(systemName: "minus.square.fill")
+                            .foregroundColor(Color(UIColor.systemGray4))
+                    }
+                    Text("\(quantity)")
+                        .fontWeight(.bold)
+                        .contentTransition(.numericText(value: Double(quantity)))
+                        .padding(.horizontal, 8)
+                    Button {
+                        withAnimation {
+                            if quantity == 20 { return }
+                            quantity += 1
+                        }
+                    } label: {
+                        Image(systemName: "plus.app.fill")
+                            .foregroundColor(Color(UIColor.systemGray4))
+
+                    }
+                }
+                .font(.largeTitle)
                 Spacer()
                 Button {
-                    let finalSelectedOptions = Array(pickerSelections.values)
-                    order.add(menuItem: item, quantity: quantity, selectedOptions: finalSelectedOptions)
-                    dismiss() // Close the sheet
+                    withAnimation {
+                        let finalSelectedOptions = Array(pickerSelections.values)
+                        order.add(menuItem: item, quantity: quantity, selectedOptions: finalSelectedOptions)
+                        dismiss() // Close the sheet
+                    }
                 } label: {
                     Label("カートに追加", systemImage: "plus")
-                    //                        .font(.title3.weight(.semibold))
+                        .font(.title3.weight(.semibold))
                         .foregroundColor(.white)
                         .padding()
                         .frame(maxWidth: 180)
@@ -234,14 +316,16 @@ extension MenuDetailView {
                         .fontWeight(.bold)
                     
                     let gridColumns: [GridItem] = [
-                        .init(.adaptive(minimum: 150, maximum: 200))
+                        .init(.adaptive(minimum: 140, maximum: 260))
                     ]
                     
                     LazyVGrid(columns: gridColumns, spacing: 10) {
                         ForEach(group.options) { option in
                             Button(action: {
                                 // このグループの選択を更新
-                                pickerSelections[group.id] = option
+                                withAnimation {
+                                    pickerSelections[group.id] = option
+                                }
                             }) {
                                 // カスタムボタンの見た目
                                 VStack {
@@ -262,12 +346,13 @@ extension MenuDetailView {
                                 .padding(10) // ボタンのパディングを少し調整
                                 .frame(maxWidth: .infinity) // グリッドセル内で幅いっぱいに
                                 .frame(minHeight: 60) // ボタンの最小高さを確保
-                                .background(isSelected(group: group, option: option) ? Color.accentColor : Color(UIColor.systemGray5))
-                                .foregroundColor(isSelected(group: group, option: option) ? .white : .primary)
+                                .background(isSelected(group: group, option: option) ? Color.clear : Color.clear)
+                                .foregroundColor(isSelected(group: group, option: option) ? .primary : .primary)
                                 .cornerRadius(8)
                                 .overlay(
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(isSelected(group: group, option: option) ? Color.clear : Color(UIColor.systemGray3), lineWidth: 1)
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .stroke(isSelected(group: group, option: option) ? Color.accentColor : Color(UIColor.systemGray3), lineWidth: 2)
+                                        .strokeBorder(isSelected(group: group, option: option) ? Color.accentColor : .clear, lineWidth: 2.5)
                                 )
                             }
                         }

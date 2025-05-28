@@ -103,6 +103,7 @@ struct MenuView: View {
                         Text("合計: ¥\(Int(order.totalAmount))") // Total
                             .font(.title.weight(.bold))
                             .padding(.vertical)
+                            .contentTransition(.numericText(value: order.totalAmount))
 
                         Button(action: {
                             if !order.items.isEmpty {

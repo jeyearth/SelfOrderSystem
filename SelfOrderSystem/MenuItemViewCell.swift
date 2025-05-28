@@ -56,6 +56,7 @@ struct MenuItemViewCell: View {
                 .frame(height: 120)
                 .frame(width: 220)
                 .padding(.bottom)
+                .shadow(radius: 4)
             
             Spacer()
             
