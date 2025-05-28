@@ -80,22 +80,37 @@ struct MenuView: View {
                     } else {
                         List {
                             ForEach(order.items) { orderItem in
-                                HStack {
-                                    VStack(alignment: .leading){
-                                        Text("\(orderItem.menuItem.name) x\(orderItem.quantity)")
-                                        ForEach(orderItem.selectedOptions){ option in
-                                            Text("+ \(option.name)")
-                                                .font(.caption)
-                                                .foregroundColor(.gray)
+                                VStack {
+                                    Text("\(orderItem.menuItem.name)")
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .font(.headline)
+                                        .fontWeight(.bold)
+                                    HStack {
+                                        VStack(alignment: .leading){
+                                            ForEach(orderItem.selectedOptions){ option in
+                                                Text("+ \(option.name)")
+                                                    .font(.caption)
+                                                    .foregroundColor(.gray)
+                                            }
                                         }
+                                        Spacer()
+                                        Text("x \(orderItem.quantity)")
+                                            .padding(.horizontal, 20)
+                                        Text("¥\(Int(orderItem.totalPrice))")
+                                            .font(.headline)
                                     }
-                                    Spacer()
-                                    Text("¥\(Int(orderItem.totalPrice))")
                                 }
+                                .padding(.all, 10)
+                                .frame(maxWidth: .infinity, minHeight: 90)
+                                .background(Color.white.opacity(0.3))
+                                .cornerRadius(10)
+                                .listRowBackground(Color.clear)
+                                .listRowSeparator(.hidden)
                             }
                             .onDelete(perform: order.removeItem) // Allow swipe to delete
                         }
-                        .listStyle(PlainListStyle()) // Use PlainListStyle for cleaner look
+                        .listStyle(.plain)
+//                        .listStyle(PlainListStyle()) // Use PlainListStyle for cleaner look
                     }
 
                     Divider()
