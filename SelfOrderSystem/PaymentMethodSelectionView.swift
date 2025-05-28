@@ -22,34 +22,40 @@ struct PaymentMethodSelectionView: View {
             Text("合計金額: ¥\(Int(order.totalAmount))") // Total Amount
                 .font(.title.weight(.semibold))
                 .padding(.bottom, 30)
-
-            ForEach(PaymentType.allCases) { type in
-                Button(action: {
-                    navigationPath.append(NavigationRoute.waitingForPayment(selectedPaymentType: type))
-                }) {
-                    HStack(spacing: 15) {
-                        Image(systemName: type.iconName)
-                            .font(.title)
-                            .frame(width: 30)
-                        Text(type.rawValue)
-                            .font(.title2)
-                            .fontWeight(.medium)
+            
+            HStack(spacing: 30) {
+                ForEach(PaymentType.allCases) { type in
+                    Button(action: {
+                        navigationPath.append(NavigationRoute.waitingForPayment(selectedPaymentType: type))
+                    }) {
+                        VStack(spacing: 15) {
+                            Spacer()
+                            Image(systemName: type.iconName)
+                                .font(.system(size: 120))
+                            Spacer()
+                            Text(type.rawValue)
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(maxHeight: 320)
+                        .frame(maxWidth: 300)
+                        .background(Color.green) // Use your app's accent color
+                        .cornerRadius(12)
+                        .shadow(radius: 3)
                     }
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(maxWidth: 350)
-                    .background(Color.orange) // Use your app's accent color
-                    .cornerRadius(12)
-                    .shadow(radius: 3)
                 }
             }
+            
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(UIColor.systemGroupedBackground).ignoresSafeArea())
         .navigationTitle("お支払い方法") // Payment Method
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true) 
+        .navigationBarBackButtonHidden(true)
         .toolbar {
              ToolbarItem(placement: .navigationBarLeading) {
                  Button { navigationPath.removeLast() } label: { // Go back to Menu
