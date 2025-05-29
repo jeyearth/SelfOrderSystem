@@ -147,7 +147,7 @@ struct MenuView: View {
                     }
 
                     Divider()
-                        .padding()
+                        .padding(.horizontal)
                     VStack {
                         
                         (Text("合計: ¥ ")
@@ -157,8 +157,8 @@ struct MenuView: View {
                         )
                         .contentTransition(.numericText(value: order.totalAmount))
                         .frame(maxWidth: .infinity, alignment: .trailing)
-                        .padding()
-
+                        .padding(.horizontal)
+                        
                         Button(action: {
                             if !order.items.isEmpty {
                                 navigationPath.append(NavigationRoute.paymentMethodSelection) // Proceed to payment

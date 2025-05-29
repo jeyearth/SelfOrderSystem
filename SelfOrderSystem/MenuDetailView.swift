@@ -169,74 +169,74 @@ extension MenuDetailView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             
-            Divider()
+//            Divider()
             
             Spacer()
             
             VStack {
                 
                 // 1. 基本料金
-                 HStack {
-                     Text("基本料金")
-                     Spacer()
-                     Text("¥\(Int(item.price))")
-                         .fontWeight(.medium)
-                 }
-                 .font(.subheadline)
-
-                 // 2. オプション料金
-                 let calculatedOptionsPrice = pickerSelections.values.reduce(0) { $0 + $1.additionalPrice }
-                 HStack {
-                     Text("オプション料金")
-                     Spacer()
-                     Text("¥\(Int(calculatedOptionsPrice))")
-                         .fontWeight(.medium)
-                         .contentTransition(.numericText(value: calculatedOptionsPrice))
-                         .animation(.default, value: calculatedOptionsPrice)
-                 }
-                 .font(.subheadline)
-
-                 Divider()
-
-                 // 3. 小計（単価：基本料金 + オプション料金）
-                 let subtotalPerItem = item.price + calculatedOptionsPrice
-                 HStack {
-                     Text("小計（単価）")
-                         .fontWeight(.bold)
-                     Spacer()
-                     Text("¥\(Int(subtotalPerItem))")
-                         .fontWeight(.bold)
-                         .contentTransition(.numericText(value: subtotalPerItem))
-                         .animation(.default, value: subtotalPerItem)
-                 }
-                 .font(.subheadline) // 基本料金などと同じサイズ感で、太字で区別
-
-                 Divider()
-
-                 // 4. 数量
-                 HStack {
-                     Text("数量")
-                     Spacer()
-                     Text("\(quantity) 点")
-                         .fontWeight(.medium)
-                         .contentTransition(.numericText(value: Double(quantity))) // quantityもアニメーション対象に
-                         .animation(.default, value: quantity)
-                 }
-                 .font(.subheadline)
-
-                 Divider()
-                     .padding(.vertical, 4)
-
-                 // 5. 合計（単価 × 数量）
-                 HStack {
-                     Text("合計")
-                         .font(.headline.weight(.bold))
-                     Text("¥\(Int(currentItemTotalPrice))")
-                         .font(.system(size: 32, weight: .heavy))
-                         .foregroundColor(.accentColor)
-                 }
-                 .contentTransition(.numericText(value: currentItemTotalPrice))
-                 .animation(.default, value: currentItemTotalPrice)
+                HStack {
+                    Text("基本料金")
+                    Spacer()
+                    Text("¥\(Int(item.price))")
+                        .fontWeight(.medium)
+                }
+                .font(.subheadline)
+                
+                // 2. オプション料金
+                let calculatedOptionsPrice = pickerSelections.values.reduce(0) { $0 + $1.additionalPrice }
+                HStack {
+                    Text("オプション料金")
+                    Spacer()
+                    Text("¥\(Int(calculatedOptionsPrice))")
+                        .fontWeight(.medium)
+                        .contentTransition(.numericText(value: calculatedOptionsPrice))
+                        .animation(.default, value: calculatedOptionsPrice)
+                }
+                .font(.subheadline)
+                
+                Divider()
+                
+                // 3. 小計（単価：基本料金 + オプション料金）
+                let subtotalPerItem = item.price + calculatedOptionsPrice
+                HStack {
+                    Text("小計（単価）")
+                        .fontWeight(.bold)
+                    Spacer()
+                    Text("¥\(Int(subtotalPerItem))")
+                        .fontWeight(.bold)
+                        .contentTransition(.numericText(value: subtotalPerItem))
+                        .animation(.default, value: subtotalPerItem)
+                }
+                .font(.subheadline) // 基本料金などと同じサイズ感で、太字で区別
+                
+                Divider()
+                
+                // 4. 数量
+                HStack {
+                    Text("数量")
+                    Spacer()
+                    Text("\(quantity) 点")
+                        .fontWeight(.medium)
+                        .contentTransition(.numericText(value: Double(quantity))) // quantityもアニメーション対象に
+                        .animation(.default, value: quantity)
+                }
+                .font(.subheadline)
+                
+                Divider()
+                    .padding(.vertical, 4)
+                
+                // 5. 合計（単価 × 数量）
+                HStack {
+                    Text("合計")
+                        .font(.headline.weight(.bold))
+                    Text("¥\(Int(currentItemTotalPrice))")
+                        .font(.system(size: 32, weight: .heavy))
+                        .foregroundColor(.accentColor)
+                }
+                .contentTransition(.numericText(value: currentItemTotalPrice))
+                .animation(.default, value: currentItemTotalPrice)
             }
             .padding(.bottom, 8)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -248,7 +248,7 @@ extension MenuDetailView {
             
             self.customOptionSelectView
             
-            Divider()
+//            Divider()
             
             Spacer()
             HStack {
@@ -275,7 +275,7 @@ extension MenuDetailView {
                     } label: {
                         Image(systemName: "plus.app.fill")
                             .foregroundColor(Color(UIColor.systemGray4))
-
+                        
                     }
                 }
                 .font(.largeTitle)
@@ -328,18 +328,32 @@ extension MenuDetailView {
                             }) {
                                 // カスタムボタンの見た目
                                 VStack {
-                                    Text(option.name)
-                                        .font(.system(size: 14))
-                                        .lineLimit(2) // 名前の表示行数を制限
-                                        .fixedSize(horizontal: false, vertical: true) // 縦方向にテキストが伸びるように
-                                    if option.additionalPrice > 0 {
-                                        Text("+\(Int(option.additionalPrice))円")
-                                            .font(.caption)
-                                    } else if group.options.count == 1 && option.additionalPrice == 0 {
-                                        // 価格表示なし
-                                    } else {
-                                        Text("(+\(Int(option.additionalPrice))円)")
-                                            .font(.caption)
+                                    HStack {
+                                        if let imageName = option.imageName {
+                                            Image(imageName)
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 24, height: 24)
+                                        }
+                                        VStack {
+                                            Text(option.name)
+                                                .font(.system(size: 14))
+                                                .lineLimit(2) // 名前の表示行数を制限
+                                                .fixedSize(horizontal: false, vertical: true) // 縦方向にテキストが伸びるように
+                                                .frame(maxWidth:. infinity, alignment: .leading)
+                                            if option.additionalPrice > 0 {
+                                                Text("+\(Int(option.additionalPrice))円")
+                                                    .font(.caption)
+                                                    .frame(maxWidth:. infinity, alignment: .leading)
+                                            } else if group.options.count == 1 && option.additionalPrice == 0 {
+                                                // 価格表示なし
+                                            } else {
+                                                Text("(+\(Int(option.additionalPrice))円)")
+                                                    .font(.caption)
+                                                    .frame(maxWidth:. infinity, alignment: .leading)
+                                            }
+                                        }
+                                        Spacer()
                                     }
                                 }
                                 .padding(10) // ボタンのパディングを少し調整
