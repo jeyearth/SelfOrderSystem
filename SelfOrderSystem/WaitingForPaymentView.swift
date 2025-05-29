@@ -81,7 +81,7 @@ struct WaitingForPaymentView: View {
                          .foregroundColor(.white)
                          .padding()
                          .frame(maxWidth: 300)
-                         .background(Color.blue)
+                         .background(.cusGreen)
                          .cornerRadius(10)
                  }
                  .padding(.top, 20)
@@ -101,6 +101,8 @@ struct WaitingForPaymentView: View {
                          Image(systemName: "chevron.left")
                          Text("方法変更") // Change Method
                      }
+                     .foregroundColor(.cusGreen)
+                     .font(.title.bold())
                  }
              }
          }

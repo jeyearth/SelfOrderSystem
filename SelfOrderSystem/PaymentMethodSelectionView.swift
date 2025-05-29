@@ -61,7 +61,7 @@ struct PaymentMethodSelectionView: View {
             }
             .frame(maxWidth: 940, maxHeight: .infinity)
 //            .background(Color(UIColor.systemGroupedBackground).ignoresSafeArea())
-            .navigationTitle("お支払い方法") // Payment Method
+//            .navigationTitle("お支払い方法") // Payment Method
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .toolbar {
@@ -69,8 +69,9 @@ struct PaymentMethodSelectionView: View {
                     Button { navigationPath.removeLast() } label: { // Go back to Menu
                         Image(systemName: "chevron.left")
                         Text("メニューに戻る")
-                            .foregroundColor(.cusGreen)
                     }
+                    .foregroundColor(.cusGreen)
+                    .font(.title.bold())
                 }
             }
         }

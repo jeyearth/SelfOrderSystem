@@ -29,8 +29,8 @@ struct MenuView: View {
                 VStack(alignment: .leading) {
                     Text("メニューを選択") // Select Menu
                         .font(.largeTitle.weight(.bold))
-                        .padding([.top, .leading])
-
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 30)
                     // Category selection
 //                    Picker("カテゴリー", selection: $selectedCategory) {
 //                        ForEach(MenuCategory.allCases) { category in
@@ -182,7 +182,7 @@ struct MenuView: View {
                 
             }
         }
-        .navigationTitle("メニュー") // Menu
+//        .navigationTitle("メニュー") // Menu
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -192,14 +192,11 @@ struct MenuView: View {
                 } label: {
                     HStack {
                         Image(systemName: "chevron.left")
-                        Text("トップに戻る") // Back to Top
+                        Text("トップに戻る")
                     }
                 }
-            }
-            if !order.items.isEmpty {
-                 ToolbarItem(placement: .navigationBarTrailing) {
-                     EditButton() // To enable swipe-to-delete in the order list
-                 }
+                .foregroundColor(.cusGreen)
+                .font(.title.bold())
             }
         }
         .sheet(item: $showingItemDetailSheet) { item in

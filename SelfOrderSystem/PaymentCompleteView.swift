@@ -33,11 +33,11 @@ struct PaymentCompleteView: View {
 
             Button(action: onReturnToTop) {
                 Text("トップに戻る") // Return to Top
-                    .font(.title2.weight(.semibold))
+                    .font(.title.weight(.semibold))
                     .foregroundColor(.white)
                     .padding(.vertical, 15)
                     .padding(.horizontal, 60)
-                    .background(Color.blue) // Or your app's primary color
+                    .background(Color.cusGreen) // Or your app's primary color
                     .cornerRadius(12)
                     .shadow(radius: 5)
             }
