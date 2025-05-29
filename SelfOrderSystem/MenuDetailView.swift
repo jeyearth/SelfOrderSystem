@@ -33,7 +33,7 @@ struct MenuDetailView: View {
         return (basePrice + optionsPrice) * Double(quantity)
     }
     
-    let leftSideWidthPercentage: CGFloat = 0.35
+    let leftSideWidthPercentage: CGFloat = 0.30
     
     private var isSingleItemSelected: Bool {
         // 1. 「セット選択」グループを探す
@@ -125,12 +125,13 @@ extension MenuDetailView {
             Image(item.imageName)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(height: 140)
-                .frame(width: 180)
+                .frame(height: 120)
+                .frame(width: 140)
                 .shadow(radius: 4)
             VStack {
                 Text(item.name)
                     .font(.headline)
+                    .padding(.vertical, 8)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             
@@ -193,17 +194,23 @@ extension MenuDetailView {
                     .padding(.vertical, 4)
                 
                 // 5. 合計（単価 × 数量）
-                HStack {
+                HStack(alignment: .bottom) {
                     Text("合計")
-                        .font(.headline.weight(.bold))
-                    Text("¥\(Int(currentItemTotalPrice))")
-                        .font(.system(size: 32, weight: .heavy))
-                        .foregroundColor(.accentColor)
+                        .font(.subheadline.weight(.bold))
+                        .padding(.bottom, 4)
+                    Spacer()
+                    (Text("¥")
+                        .font(.title3)
+                    + Text("\(Int(currentItemTotalPrice))")
+                        .font(.system(size: 30, weight: .heavy))
+                     )
+                    .foregroundColor(.cusGreen)
+                    
                 }
                 .contentTransition(.numericText(value: currentItemTotalPrice))
                 .animation(.default, value: currentItemTotalPrice)
+                .padding(.bottom, 8)
             }
-            .padding(.bottom, 8)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
@@ -307,10 +314,12 @@ extension MenuDetailView {
                                             }
                                             VStack {
                                                 Text(option.name)
-                                                    .font(.system(size: 14))
+//                                                    .font(.system(size: 14))
+                                                    .font(.subheadline.bold())
                                                     .lineLimit(2) // 名前の表示行数を制限
                                                     .fixedSize(horizontal: false, vertical: true) // 縦方向にテキストが伸びるように
                                                     .frame(maxWidth:. infinity, alignment: .leading)
+                                                Spacer()
                                                 if option.additionalPrice > 0 {
                                                     Text("+\(Int(option.additionalPrice))円")
                                                         .font(.caption)
@@ -328,7 +337,7 @@ extension MenuDetailView {
                                     }
                                     .padding(10) // ボタンのパディングを少し調整
                                     .frame(maxWidth: .infinity) // グリッドセル内で幅いっぱいに
-                                    .frame(minHeight: 60) // ボタンの最小高さを確保
+                                    .frame(minHeight: 72) // ボタンの最小高さを確保
                                     .background(isSelected(group: group, option: option) ? Color.clear : Color.clear)
                                     .foregroundColor(isSelected(group: group, option: option) ? .primary : .primary)
                                     .cornerRadius(8)
@@ -339,7 +348,6 @@ extension MenuDetailView {
                                     )
                                 }
                                 .disabled(shouldDisableThisGroup)
-                                //                            .disabled(group.name == sandwichOptionGroups[1].name && )
                             }
                         }
                         .padding(.bottom, 24)

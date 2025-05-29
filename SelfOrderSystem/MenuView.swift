@@ -32,17 +32,10 @@ struct MenuView: View {
                         .padding(.vertical, 10)
                         .padding(.horizontal, 30)
                     // Category selection
-//                    Picker("カテゴリー", selection: $selectedCategory) {
-//                        ForEach(MenuCategory.allCases) { category in
-//                            Text(category.rawValue).tag(category)
-//                        }
-//                    }
-//                    .pickerStyle(SegmentedPickerStyle())
-//                    .padding(.horizontal)
-//                    .padding(.bottom, 10)
                     
                     self.customMenuCategorySegmentedControl
-                        .padding()
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
 
                     // Grid of menu items
                     ScrollView {
@@ -83,7 +76,7 @@ struct MenuView: View {
                                     Image(orderItem.menuItem.imageName)
                                         .resizable()
                                         .scaledToFit()
-                                        .frame(width: 60)
+                                        .frame(width: 60, height: 60)
                                     VStack {
                                         Text("\(orderItem.menuItem.name)")
                                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -220,17 +213,34 @@ extension MenuView {
                     Button {
                         selectedCategory = category
                     } label: {
-                        VStack {
+                        HStack {
+                            Image(category.imageName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 48, height: 32)
+                                .padding(.leading, 12)
                             Text(category.rawValue)
-                                .font(.title2.bold())
-                                .foregroundColor(.primary)
+                                .font(.system(size: 20, weight: selectedCategory == category ? .bold : .medium))
+                                .padding(.leading, 4)
+                                .padding(.vertical, 10)
+                                .foregroundColor(selectedCategory == category ? .white : Color(UIColor.label))
+                                .frame(maxWidth: .infinity, alignment: .leading)
                         }
-                        .frame(width: 140)
-                        .padding(16)
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 40)
-                                .strokeBorder(selectedCategory == category ? .cusGreen : Color.gray, lineWidth: 4)
-                        }
+                        .background(
+                            ZStack {
+                                if selectedCategory == category {
+                                    Capsule()
+                                        .fill(Color.cusGreen)
+                                        .frame(height: 60)
+                                } else {
+                                    Capsule()
+                                        .fill(.ultraThinMaterial)
+                                        .frame(height: 60)
+                                }
+                            }
+                        )
+                        .frame(width: 220, height: 100)
+                        .clipShape(Capsule())
                     }
                 }
             }
@@ -238,62 +248,5 @@ extension MenuView {
         }
         .frame(height: 40)
     }
-    
-//    private var customOptionSelectView: some View {
-//        VStack {
-//            if let optionGroups = item.optionGroups {
-//                ForEach(optionGroups) { group in
-//                    Text(group.name)
-//                        .frame(maxWidth: .infinity, alignment: .leading)
-//                        .font(.title3)
-//                        .fontWeight(.bold)
-//
-//                    let gridColumns: [GridItem] = [
-//                        .init(.adaptive(minimum: 140, maximum: 260))
-//                    ]
-//
-//                    LazyVGrid(columns: gridColumns, spacing: 10) {
-//                        ForEach(group.options) { option in
-//                            Button(action: {
-//                                // このグループの選択を更新
-//                                withAnimation {
-//                                    pickerSelections[group.id] = option
-//                                }
-//                            }) {
-//                                // カスタムボタンの見た目
-//                                VStack {
-//                                    Text(option.name)
-//                                        .font(.system(size: 14))
-//                                        .lineLimit(2) // 名前の表示行数を制限
-//                                        .fixedSize(horizontal: false, vertical: true) // 縦方向にテキストが伸びるように
-//                                    if option.additionalPrice > 0 {
-//                                        Text("+\(Int(option.additionalPrice))円")
-//                                            .font(.caption)
-//                                    } else if group.options.count == 1 && option.additionalPrice == 0 {
-//                                        // 価格表示なし
-//                                    } else {
-//                                        Text("(+\(Int(option.additionalPrice))円)")
-//                                            .font(.caption)
-//                                    }
-//                                }
-//                                .padding(10) // ボタンのパディングを少し調整
-//                                .frame(maxWidth: .infinity) // グリッドセル内で幅いっぱいに
-//                                .frame(minHeight: 60) // ボタンの最小高さを確保
-//                                .background(isSelected(group: group, option: option) ? Color.clear : Color.clear)
-//                                .foregroundColor(isSelected(group: group, option: option) ? .primary : .primary)
-//                                .cornerRadius(8)
-//                                .overlay(
-//                                    RoundedRectangle(cornerRadius: 12)
-//                                        .stroke(isSelected(group: group, option: option) ? Color.accentColor : Color(UIColor.systemGray3), lineWidth: 2)
-//                                        .strokeBorder(isSelected(group: group, option: option) ? Color.accentColor : .clear, lineWidth: 2.5)
-//                                )
-//                            }
-//                        }
-//                    }
-//                    .padding(.bottom, 24)
-//                }
-//            }
-//        }
-//    }
     
 }

@@ -14,4 +14,15 @@ enum MenuCategory: String, CaseIterable, Identifiable {
     case side = "サイド"
     case drink = "ドリンク"
     var id: String { self.rawValue }
+    
+    var imageName: String {
+        switch self {
+        case .sandwich:
+            return sampleMenuItems[0].imageName
+        case .side:
+            return sampleMenuItems[6].imageName
+        case .drink:
+            return drinkMenuItems[0].imageName
+        }
+    }
 }

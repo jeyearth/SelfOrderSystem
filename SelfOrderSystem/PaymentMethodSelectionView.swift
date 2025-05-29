@@ -50,7 +50,7 @@ struct PaymentMethodSelectionView: View {
                             .padding()
                             .frame(maxHeight: 320)
                             .frame(maxWidth: 300)
-                            .background(Color.green) // Use your app's accent color
+                            .background(.cusGreen)
                             .cornerRadius(12)
                             .shadow(radius: 3)
                         }
@@ -60,8 +60,6 @@ struct PaymentMethodSelectionView: View {
                 Spacer()
             }
             .frame(maxWidth: 940, maxHeight: .infinity)
-//            .background(Color(UIColor.systemGroupedBackground).ignoresSafeArea())
-//            .navigationTitle("お支払い方法") // Payment Method
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .toolbar {

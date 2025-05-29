@@ -64,21 +64,23 @@ struct MenuItemViewCell: View {
                 VStack(alignment: .leading) {
                     Text(item.name)
                         .font(.headline)
-                    Text("¥\(Int(item.price))")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(.green)
+                    (Text("¥")
+                        .font(.title3)
+                     + Text("\(Int(item.price))")
+                        .font(.largeTitle.bold())
+                     )
+                    .foregroundColor(.cusGreen)
                 }
                 Spacer()
                 Button {
                     showingItemDetailSheet = item
                 } label: {
                     Text("追加") // Proceed to Checkout
-                        .font(.title3.weight(.semibold))
+                        .font(.title2.bold())
                         .foregroundColor(.white)
                         .padding()
                         .frame(maxWidth: 80)
-                        .background(Color.green)
+                        .background(Color.cusGreen)
                         .cornerRadius(10)
                 }
             }
