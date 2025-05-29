@@ -35,6 +35,25 @@ struct MenuDetailView: View {
     
     let leftSideWidthPercentage: CGFloat = 0.35
     
+    private var isSingleItemSelected: Bool {
+        // 1. 「セット選択」グループを探す
+        guard let setGroup = item.optionGroups?.first(where: { $0.name ==  sandwichOptionGroups[0].name}) else {
+            return false // 「セット選択」グループが見つからなければ判定不可
+        }
+        
+        // 2. 「セット選択」グループで現在選択されているオプションを取得
+        guard let selectedSetOption = pickerSelections[setGroup.id] else {
+            // pickerSelectionsにまだ値がない場合 (onAppearで初期化される前など) は、
+            // initialSelectionの結果で判定することも考えられますが、
+            // onAppearでpickerSelectionsが設定されることを期待するのがシンプルです。
+            // もし厳密に初期状態で判定が必要なら、initialSelection(for: setGroup)?.name == singleItemOptionName を使います。
+            return false // ここでは、選択が確定していない場合は単品ではないと見なします
+        }
+        
+        // 3. 選択されているオプションが「単品」かどうかをチェック
+        return selectedSetOption.name == sandwichOptionGroups[0].options[0].name
+    }
+    
     var body: some View {
         NavigationView { // NavigationView provides a title bar for the sheet
             VStack {
@@ -56,60 +75,6 @@ struct MenuDetailView: View {
                             .frame(width: geometry.size.width * (1 - leftSideWidthPercentage))
                         }
                     }
-                    
-                    //                    Image(item.imageName) // Replace with actual image
-                    //                        .resizable()
-                    //                        .aspectRatio(contentMode: .fit)
-                    //                        .frame(height: 250)
-                    //                        .cornerRadius(10)
-                    //                        .frame(maxWidth: .infinity)
-                    //                        .shadow(radius: 5)
-                    //
-                    //                    Text(item.name)
-                    //                        .font(.largeTitle.weight(.bold))
-                    //
-                    //                    if let description = item.description, !description.isEmpty {
-                    //                        Text(description)
-                    //                            .font(.body)
-                    //                            .foregroundColor(.secondary)
-                    //                    }
-                    //
-                    //                    Text("基本価格: ¥\(Int(item.price))")
-                    //                        .font(.title2)
-                    //
-                    //                    Divider()
-                    //
-                    //                    // Option Groups
-                    //                    if let optionGroups = item.optionGroups {
-                    //                        ForEach(optionGroups) { group in
-                    //                            Text(group.name)
-                    //                                .font(.title3.weight(.semibold))
-                    //                            // Using a Picker for single-choice options
-                    //                            Picker(group.name, selection: Binding(
-                    //                                get: { pickerSelections[group.id] ?? initialSelection(for: group)! },
-                    //                                set: { pickerSelections[group.id] = $0 }
-                    //                            )) {
-                    //                                ForEach(group.options) { option in
-                    //                                    Text("\(option.name) (+\(Int(option.additionalPrice))円)").tag(option)
-                    //                                }
-                    //                            }
-                    //                            .pickerStyle(SegmentedPickerStyle()) // Or .automatic, .menu
-                    //                            .padding(.bottom, 10)
-                    //                        }
-                    //                    }
-                    //
-                    //                    Divider()
-                    //
-                    //                    HStack {
-                    //                        Text("数量:") // Quantity
-                    //                            .font(.title3.weight(.semibold))
-                    //                        Stepper("\(quantity)", value: $quantity, in: 1...20) // Max quantity 20
-                    //                            .font(.title3)
-                    //                    }
-                    //
-                    //                    Text("この商品の合計: ¥\(Int(currentItemTotalPrice))") // Subtotal for this item
-                    //                        .font(.title2.weight(.bold))
-                    //                        .padding(.vertical)
                 }
                 .padding(20)
             }
@@ -309,68 +274,76 @@ extension MenuDetailView {
         VStack {
             if let optionGroups = item.optionGroups {
                 ForEach(optionGroups) { group in
-                    Text(group.name)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.title3)
-                        .fontWeight(.bold)
                     
-                    let gridColumns: [GridItem] = [
-                        .init(.adaptive(minimum: 140, maximum: 260))
-                    ]
+                    let shouldDisableThisGroup = (group.name == sandwichOptionGroups[1].name && isSingleItemSelected)
                     
-                    LazyVGrid(columns: gridColumns, spacing: 10) {
-                        ForEach(group.options) { option in
-                            Button(action: {
-                                // このグループの選択を更新
-                                withAnimation {
-                                    pickerSelections[group.id] = option
-                                }
-                            }) {
-                                // カスタムボタンの見た目
-                                VStack {
-                                    HStack {
-                                        if let imageName = option.imageName {
-                                            Image(imageName)
-                                                .resizable()
-                                                .scaledToFit()
-                                                .frame(width: 24, height: 24)
-                                        }
-                                        VStack {
-                                            Text(option.name)
-                                                .font(.system(size: 14))
-                                                .lineLimit(2) // 名前の表示行数を制限
-                                                .fixedSize(horizontal: false, vertical: true) // 縦方向にテキストが伸びるように
-                                                .frame(maxWidth:. infinity, alignment: .leading)
-                                            if option.additionalPrice > 0 {
-                                                Text("+\(Int(option.additionalPrice))円")
-                                                    .font(.caption)
-                                                    .frame(maxWidth:. infinity, alignment: .leading)
-                                            } else if group.options.count == 1 && option.additionalPrice == 0 {
-                                                // 価格表示なし
-                                            } else {
-                                                Text("(+\(Int(option.additionalPrice))円)")
-                                                    .font(.caption)
-                                                    .frame(maxWidth:. infinity, alignment: .leading)
-                                            }
-                                        }
-                                        Spacer()
+                    if !shouldDisableThisGroup {
+                        
+                        Text(group.name)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .font(.title3)
+                            .fontWeight(.bold)
+                        
+                        let gridColumns: [GridItem] = [
+                            .init(.adaptive(minimum: 140, maximum: 260))
+                        ]
+                        
+                        LazyVGrid(columns: gridColumns, spacing: 10) {
+                            ForEach(group.options) { option in
+                                Button(action: {
+                                    // このグループの選択を更新
+                                    withAnimation {
+                                        pickerSelections[group.id] = option
                                     }
+                                }) {
+                                    // カスタムボタンの見た目
+                                    VStack {
+                                        HStack {
+                                            if let imageName = option.imageName {
+                                                Image(imageName)
+                                                    .resizable()
+                                                    .scaledToFit()
+                                                    .frame(width: 24, height: 24)
+                                            }
+                                            VStack {
+                                                Text(option.name)
+                                                    .font(.system(size: 14))
+                                                    .lineLimit(2) // 名前の表示行数を制限
+                                                    .fixedSize(horizontal: false, vertical: true) // 縦方向にテキストが伸びるように
+                                                    .frame(maxWidth:. infinity, alignment: .leading)
+                                                if option.additionalPrice > 0 {
+                                                    Text("+\(Int(option.additionalPrice))円")
+                                                        .font(.caption)
+                                                        .frame(maxWidth:. infinity, alignment: .leading)
+                                                } else if group.options.count == 1 && option.additionalPrice == 0 {
+                                                    // 価格表示なし
+                                                } else {
+                                                    Text("(+\(Int(option.additionalPrice))円)")
+                                                        .font(.caption)
+                                                        .frame(maxWidth:. infinity, alignment: .leading)
+                                                }
+                                            }
+                                            Spacer()
+                                        }
+                                    }
+                                    .padding(10) // ボタンのパディングを少し調整
+                                    .frame(maxWidth: .infinity) // グリッドセル内で幅いっぱいに
+                                    .frame(minHeight: 60) // ボタンの最小高さを確保
+                                    .background(isSelected(group: group, option: option) ? Color.clear : Color.clear)
+                                    .foregroundColor(isSelected(group: group, option: option) ? .primary : .primary)
+                                    .cornerRadius(8)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .stroke(isSelected(group: group, option: option) ? Color.accentColor : Color(UIColor.systemGray3), lineWidth: 2)
+                                            .strokeBorder(isSelected(group: group, option: option) ? Color.accentColor : .clear, lineWidth: 2.5)
+                                    )
                                 }
-                                .padding(10) // ボタンのパディングを少し調整
-                                .frame(maxWidth: .infinity) // グリッドセル内で幅いっぱいに
-                                .frame(minHeight: 60) // ボタンの最小高さを確保
-                                .background(isSelected(group: group, option: option) ? Color.clear : Color.clear)
-                                .foregroundColor(isSelected(group: group, option: option) ? .primary : .primary)
-                                .cornerRadius(8)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .stroke(isSelected(group: group, option: option) ? Color.accentColor : Color(UIColor.systemGray3), lineWidth: 2)
-                                        .strokeBorder(isSelected(group: group, option: option) ? Color.accentColor : .clear, lineWidth: 2.5)
-                                )
+                                .disabled(shouldDisableThisGroup)
+                                //                            .disabled(group.name == sandwichOptionGroups[1].name && )
                             }
                         }
+                        .padding(.bottom, 24)
                     }
-                    .padding(.bottom, 24)
                 }
             }
         }
