@@ -38,9 +38,9 @@ func setDrinkOptionItems(_ drinkMenuItems: [MenuItem]) -> [MenuOption] {
 let drinkOptionItems: [MenuOption] = setDrinkOptionItems(drinkMenuItems)
 
 let sandwichOptionGroups: [MenuOptionGroup] = [
-    MenuOptionGroup(name: "基本選択", options: [ // Base Choice
-        MenuOption(name: "単品", additionalPrice: 0),      // Single Item
-        MenuOption(name: "セット(ドリンクM, ポテトM)", additionalPrice: 300)    // Set (e.g., with fries and drink)
+    MenuOptionGroup(name: "基本選択", options: [
+        MenuOption(name: "単品", additionalPrice: 0),
+        MenuOption(name: "セット(ドリンクM, ポテトM)", additionalPrice: 300)
     ]),
     MenuOptionGroup(name: "ドリンク選択 (セットの場合)", options: drinkOptionItems)
 ]
@@ -49,12 +49,12 @@ let sandwichOptionGroups: [MenuOptionGroup] = [
 let sampleMenuItems: [MenuItem] = [
     
     // サンドウィッチ
-    MenuItem(name: "アボカドチキン", price: 800, imageName: "0101", category: .sandwich, optionGroups: sandwichOptionGroups),
-    MenuItem(name: "グリル野菜とフムス", price: 750, imageName: "0102", category: .sandwich, optionGroups: sandwichOptionGroups),
-    MenuItem(name: "サーモンとクリームチーズ", price: 750, imageName: "0103", category: .sandwich, optionGroups: sandwichOptionGroups),
-    MenuItem(name: "バジル豆腐とトマト", price: 750, imageName: "0104", category: .sandwich, optionGroups: sandwichOptionGroups),
-    MenuItem(name: "エッグ&ほうれん草", price: 750, imageName: "0105", category: .sandwich, optionGroups: sandwichOptionGroups),
-    MenuItem(name: "ツナとアボカド", price: 750, imageName: "0106", category: .sandwich, optionGroups: sandwichOptionGroups),
+    MenuItem(name: "アボカドチキン", price: 980, imageName: "0101", category: .sandwich, optionGroups: sandwichOptionGroups),
+    MenuItem(name: "グリル野菜とフムス", price: 920, imageName: "0102", category: .sandwich, optionGroups: sandwichOptionGroups),
+    MenuItem(name: "サーモンとクリームチーズ", price: 1100, imageName: "0103", category: .sandwich, optionGroups: sandwichOptionGroups),
+    MenuItem(name: "バジル豆腐とトマト", price: 780, imageName: "0104", category: .sandwich, optionGroups: sandwichOptionGroups),
+    MenuItem(name: "エッグ&ほうれん草", price: 820, imageName: "0105", category: .sandwich, optionGroups: sandwichOptionGroups),
+    MenuItem(name: "ツナとアボカド", price: 950, imageName: "0106", category: .sandwich, optionGroups: sandwichOptionGroups),
     
     // サイドメニュー
     MenuItem(name: "フライドポテト", price: 200, imageName: "0201", category: .side, optionGroups: [

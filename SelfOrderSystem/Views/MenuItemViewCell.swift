@@ -16,38 +16,6 @@ struct MenuItemViewCell: View {
 
     var body: some View {
         VStack {
-//            Image(item.imageName) // Replace with actual image loading
-//                .resizable()
-////                .aspectRatio(contentMode: .fill)
-//                .aspectRatio(contentMode: .fit)
-//                .frame(height: 120)
-//                .frame(maxWidth: .infinity)
-//                .clipped()
-//                .cornerRadius(8)
-//                .shadow(radius: 3)
-//                .overlay(
-//                    VStack { // Price overlay
-//                        Spacer()
-//                        Text("¥\(Int(item.price))")
-//                            .font(.headline)
-//                            .padding(5)
-//                            .background(Color.black.opacity(0.6))
-//                            .foregroundColor(.white)
-//                            .cornerRadius(5)
-//                    }
-//                    .padding(5), alignment: .bottomTrailing
-//                )
-//            
-//            Spacer()
-//
-//            Text(item.name)
-//                .font(.headline)
-//                .lineLimit(2)
-//                .padding(.top, 5)
-//
-//            Text(item.category.rawValue)
-//                .font(.caption)
-//                .foregroundColor(.gray)
             Spacer()
             
             Image(item.imageName)
@@ -86,7 +54,7 @@ struct MenuItemViewCell: View {
             }
         }
         .padding()
-        .background(Color(UIColor.systemBackground)) // Use system background for light/dark mode
+        .background(Color(UIColor.systemBackground))
         .cornerRadius(12)
         .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
         .frame(width: 340, height: 260)

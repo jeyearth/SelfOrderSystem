@@ -49,7 +49,6 @@ struct WaitingForPaymentView: View {
                 case .creditCard:
                     Image(systemName: "creditcard.and.123")
                         .resizable().scaledToFit().frame(width:150, height:150)
-//                        .foregroundColor(Color.cusGreen)
                     Text("クレジットカードを端末にかざしてください。") // Tap your credit card on the terminal.
                         .font(.title2)
                         .multilineTextAlignment(.center)

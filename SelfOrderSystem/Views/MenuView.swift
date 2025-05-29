@@ -14,14 +14,14 @@ struct MenuView: View {
     @EnvironmentObject var order: Order // Access the shared order object
     @State private var selectedCategory: MenuCategory = .sandwich
     @State var showingItemDetailSheet: MenuItem? = nil // Controls the presentation of the detail sheet
-
+    
     // Filters menu items based on the selected category
     var currentCategoryItems: [MenuItem] {
         sampleMenuItems.filter { $0.category == selectedCategory }
     }
-
+    
     let columns: [GridItem] = Array(repeating: .init(.flexible(minimum: 320, maximum: 360)), count: 2) // Adaptive columns
-
+    
     var body: some View {
         GeometryReader { geometry in
             HStack(alignment: .top, spacing: 0) {
@@ -36,7 +36,7 @@ struct MenuView: View {
                     self.customMenuCategorySegmentedControl
                         .padding(.horizontal, 12)
                         .padding(.vertical, 8)
-
+                    
                     // Grid of menu items
                     ScrollView {
                         LazyVGrid(columns: columns, spacing: 20) {
@@ -48,14 +48,13 @@ struct MenuView: View {
                     }
                 }
                 .frame(width: geometry.size.width * 0.65) // Menu items take up 65% of width
-
+                
                 // Order summary sidebar
                 VStack(spacing: 0) {
                     Text("ご注文内容") // Your Order
                         .font(.title2.weight(.semibold))
                         .padding()
                         .frame(maxWidth: .infinity)
-//                        .background(Color.gray.opacity(0.2))
                     
                     Divider()
                         .padding()
@@ -120,8 +119,8 @@ struct MenuView: View {
                                             order.removeItem(id: orderItem.id)
                                         }
                                     }) {
-                                        Image(systemName: "trash.fill") // アイコン変更、fillで塗りつぶし
-                                            .font(.title2) // アイコンサイズ調整
+                                        Image(systemName: "trash.fill")
+                                            .font(.title2)
                                             .foregroundColor(.red)
                                             .padding(.horizontal, 10)
                                     }
@@ -134,11 +133,10 @@ struct MenuView: View {
                                 .listRowBackground(Color.clear)
                                 .listRowSeparator(.hidden)
                             }
-//                            .onDelete(perform: order.removeItem) // Allow swipe to delete
                         }
                         .listStyle(PlainListStyle())
                     }
-
+                    
                     Divider()
                         .padding(.horizontal)
                     VStack {
@@ -174,7 +172,6 @@ struct MenuView: View {
                 
             }
         }
-//        .navigationTitle("メニュー") // Menu
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -200,7 +197,7 @@ struct MenuView: View {
 
 #Preview {
     MenuView(navigationPath: .constant(NavigationPath()))
-         .environmentObject(Order()) // EnvironmentObjectが必要な場合はこれも追加（後述）
+        .environmentObject(Order()) // EnvironmentObjectが必要な場合はこれも追加（後述）
 }
 
 extension MenuView {

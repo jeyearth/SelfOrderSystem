@@ -15,16 +15,12 @@ struct MenuDetailView: View {
     @Environment(\.dismiss) var dismiss // To close the sheet
     
     @State private var quantity: Int = 1
-    // Store selected options: [OptionGroupID: SelectedOptionID] or similar
-    // For this sample, we'll simplify and manage selected options directly.
     @State private var currentSelectedOptions: [MenuOption] = []
     
-    // Helper to get the initial selection for an option group (e.g., "単品")
     private func initialSelection(for group: MenuOptionGroup) -> MenuOption? {
         return group.options.first(where: { $0.additionalPrice == 0 }) ?? group.options.first
     }
     
-    // State for picker selections, keyed by option group ID
     @State private var pickerSelections: [UUID: MenuOption] = [:]
     
     var currentItemTotalPrice: Double {
@@ -43,11 +39,7 @@ struct MenuDetailView: View {
         
         // 2. 「セット選択」グループで現在選択されているオプションを取得
         guard let selectedSetOption = pickerSelections[setGroup.id] else {
-            // pickerSelectionsにまだ値がない場合 (onAppearで初期化される前など) は、
-            // initialSelectionの結果で判定することも考えられますが、
-            // onAppearでpickerSelectionsが設定されることを期待するのがシンプルです。
-            // もし厳密に初期状態で判定が必要なら、initialSelection(for: setGroup)?.name == singleItemOptionName を使います。
-            return false // ここでは、選択が確定していない場合は単品ではないと見なします
+            return false
         }
         
         // 3. 選択されているオプションが「単品」かどうかをチェック
@@ -135,8 +127,6 @@ extension MenuDetailView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             
-//            Divider()
-            
             Spacer()
             
             VStack {
@@ -201,9 +191,9 @@ extension MenuDetailView {
                     Spacer()
                     (Text("¥")
                         .font(.title3)
-                    + Text("\(Int(currentItemTotalPrice))")
+                     + Text("\(Int(currentItemTotalPrice))")
                         .font(.system(size: 30, weight: .heavy))
-                     )
+                    )
                     .foregroundColor(.cusGreen)
                     
                 }
@@ -219,8 +209,6 @@ extension MenuDetailView {
         VStack {
             
             self.customOptionSelectView
-            
-//            Divider()
             
             Spacer()
             HStack {
@@ -272,8 +260,6 @@ extension MenuDetailView {
     }
     
     private func isSelected(group: MenuOptionGroup, option: MenuOption) -> Bool {
-        // pickerSelections 辞書から現在のグループのIDで検索し、
-        // 保存されているオプションのIDが、チェック対象のオプションのIDと一致するかどうかを返す
         return pickerSelections[group.id]?.id == option.id
     }
     
@@ -298,7 +284,6 @@ extension MenuDetailView {
                         LazyVGrid(columns: gridColumns, spacing: 10) {
                             ForEach(group.options) { option in
                                 Button(action: {
-                                    // このグループの選択を更新
                                     withAnimation {
                                         pickerSelections[group.id] = option
                                     }
@@ -314,7 +299,6 @@ extension MenuDetailView {
                                             }
                                             VStack {
                                                 Text(option.name)
-//                                                    .font(.system(size: 14))
                                                     .font(.subheadline.bold())
                                                     .lineLimit(2) // 名前の表示行数を制限
                                                     .fixedSize(horizontal: false, vertical: true) // 縦方向にテキストが伸びるように
@@ -335,9 +319,9 @@ extension MenuDetailView {
                                             Spacer()
                                         }
                                     }
-                                    .padding(10) // ボタンのパディングを少し調整
-                                    .frame(maxWidth: .infinity) // グリッドセル内で幅いっぱいに
-                                    .frame(minHeight: 72) // ボタンの最小高さを確保
+                                    .padding(10)
+                                    .frame(maxWidth: .infinity)
+                                    .frame(minHeight: 72)
                                     .background(isSelected(group: group, option: option) ? Color.clear : Color.clear)
                                     .foregroundColor(isSelected(group: group, option: option) ? .primary : .primary)
                                     .cornerRadius(8)

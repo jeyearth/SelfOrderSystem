@@ -49,5 +49,5 @@ struct ContentView: View {
 
 #Preview {
     MenuView(navigationPath: .constant(NavigationPath()))
-         .environmentObject(Order()) // EnvironmentObjectが必要な場合はこれも追加（後述）
+         .environmentObject(Order())
 }

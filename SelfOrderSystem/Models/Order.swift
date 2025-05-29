@@ -26,10 +26,6 @@ class Order: ObservableObject {
             items.append(newOrderItem)
         }
     }
-
-//    func removeItem(at offsets: IndexSet) {
-//        items.remove(atOffsets: offsets)
-//    }
     
     func removeItem(id: UUID) {
         items.removeAll { $0.id == id }

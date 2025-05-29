@@ -26,17 +26,16 @@ struct TopView: View {
             LinearGradient(
                 gradient: Gradient(colors: [
                     Color.white.opacity(0.3),
-                    Color.green.opacity(0.1), // 中央は少し薄く
-                    Color.white.opacity(0.4)  // 下部は少し濃くしてボタンのコントラストを上げる
+                    Color.green.opacity(0.1),
+                    Color.white.opacity(0.4)
                 ]),
                 startPoint: .top,
                 endPoint: .bottom
             )
-            .ignoresSafeArea() // スクリムも画面全体に
+            .ignoresSafeArea()
             
             VStack(spacing: 50) {
                 Spacer()
-                // Placeholder for your app's logo or main image
                 Image("logo") // Replace with your asset
                     .resizable()
                     .scaleEffect(1.15)
@@ -74,9 +73,9 @@ struct TopView: View {
                         print()
                     } label: {
                         HStack {
-                            Image(systemName: "globe") // 地球儀アイコン
+                            Image(systemName: "globe")
                                 .padding(.horizontal, 8)
-                            Text("LANGUAGE") // 例: "JA", "EN"
+                            Text("LANGUAGE")
                             Spacer()
                             Image(systemName: "chevron.down")
                                 .padding(.horizontal, 8)
@@ -106,10 +105,10 @@ struct TopView: View {
                     }
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
-                    .background(.ultraThinMaterial, in: Capsule()) // 半透明なカプセル背景
-                    .foregroundColor(.primary) // テキストとアイコンの色（ライト/ダークモード対応）
+                    .background(.ultraThinMaterial, in: Capsule())
+                    .foregroundColor(.primary)
                     .font(.caption.weight(.semibold))
-                    .shadow(color: .black.opacity(0.2), radius: 3, x: 0, y: 1) // 軽い影
+                    .shadow(color: .black.opacity(0.2), radius: 3, x: 0, y: 1)
                 }
             }
         }
