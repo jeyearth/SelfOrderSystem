@@ -44,7 +44,6 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-//        .previewDevice("iPad Pro (11-inch) (4th generation)") // Preview as an iPad
         .environmentObject(Order()) // Provide a dummy order for the preview
 }
 

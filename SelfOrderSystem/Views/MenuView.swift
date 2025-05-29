@@ -162,13 +162,12 @@ struct MenuView: View {
                                 .foregroundColor(.white)
                                 .padding()
                                 .frame(maxWidth: .infinity)
-                                .background(order.items.isEmpty ? Color.gray : Color.green)
+                                .background(order.items.isEmpty ? Color.gray : Color.cusGreen)
                                 .cornerRadius(10)
                         }
                         .disabled(order.items.isEmpty)
                         .padding([.horizontal, .bottom])
                     }
-//                    .background(Color.gray.opacity(0.1))
                 }
                 .frame(width: geometry.size.width * 0.35) // Order summary takes 35%
                 .background(Color(UIColor.systemGray6))

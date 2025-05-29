@@ -21,7 +21,6 @@ struct TopView: View {
                 .scaledToFill()
                 .blur(radius: 15)
                 .ignoresSafeArea()
-            //                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .padding(0)
             
             LinearGradient(
@@ -38,19 +37,20 @@ struct TopView: View {
             VStack(spacing: 50) {
                 Spacer()
                 // Placeholder for your app's logo or main image
-                Image("your_app_logo_placeholder") // Replace with your asset
+                Image("logo") // Replace with your asset
                     .resizable()
+                    .scaleEffect(1.15)
+                    .offset(x: 0, y: -19)
                     .scaledToFit()
-                    .frame(width: 200, height: 200)
+                    .frame(width: 300, height: 300)
                     .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.gray, lineWidth: 2))
                     .shadow(radius: 10)
-                    .accessibilityLabel("App Logo")
                 
-                
-                Text("セルフオーダーへようこそ！") // Welcome to Self Order!
+                Text("ようこそ！") // Welcome to Self Order!
                     .font(.system(size: 32, weight: .bold, design: .rounded))
                     .multilineTextAlignment(.center)
+                    .foregroundColor(.white)
+                    .shadow(radius: 10)
                 
                 Spacer()
                 
@@ -67,7 +67,6 @@ struct TopView: View {
                         .cornerRadius(12)
                         .shadow(radius: 5)
                 }
-                Spacer()
                 
                 HStack {
                     Spacer()

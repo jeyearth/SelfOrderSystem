@@ -19,7 +19,7 @@ struct PaymentCompleteView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 150, height: 150)
-                .foregroundColor(.green)
+                .foregroundColor(Color.cusGreen)
 
             Text("お支払い完了") // Payment Complete
                 .font(.system(size: 48, weight: .bold, design: .rounded))
