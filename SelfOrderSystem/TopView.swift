@@ -1,9 +1,9 @@
 //
 //  TopView.swift
 //  SelfOrderSystem
-//  
+//
 //  Created by Jey Hirano on 2025/05/26
-//  
+//
 //
 
 import SwiftUI
@@ -13,45 +13,107 @@ import SwiftUI
 // 1. Top Screen (トップ画面)
 struct TopView: View {
     @Binding var navigationPath: NavigationPath
-
+    
     var body: some View {
-        VStack(spacing: 50) {
-            Spacer()
-            // Placeholder for your app's logo or main image
-            Image("your_app_logo_placeholder") // Replace with your asset
+        ZStack {
+            Image("topImage")
                 .resizable()
-                .scaledToFit()
-                .frame(width: 200, height: 200)
-                .clipShape(Circle())
-                .overlay(Circle().stroke(Color.gray, lineWidth: 2))
-                .shadow(radius: 10)
-                .accessibilityLabel("App Logo")
-
-
-            Text("セルフオーダーへようこそ！") // Welcome to Self Order!
-                .font(.system(size: 32, weight: .bold, design: .rounded))
-                .multilineTextAlignment(.center)
-
-            Spacer()
-
-            Button(action: {
-                navigationPath.append(NavigationRoute.menu) // Navigate to Menu screen
-            }) {
-                Text("注文を始める") // Start Order
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.white)
-                    .padding(.vertical, 15)
-                    .padding(.horizontal, 60)
-                    .background(Color.green)
-                    .cornerRadius(12)
-                    .shadow(radius: 5)
+                .scaledToFill()
+                .blur(radius: 15)
+                .ignoresSafeArea()
+            //                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .padding(0)
+            
+            LinearGradient(
+                gradient: Gradient(colors: [
+                    Color.white.opacity(0.3),
+                    Color.green.opacity(0.1), // 中央は少し薄く
+                    Color.white.opacity(0.4)  // 下部は少し濃くしてボタンのコントラストを上げる
+                ]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea() // スクリムも画面全体に
+            
+            VStack(spacing: 50) {
+                Spacer()
+                // Placeholder for your app's logo or main image
+                Image("your_app_logo_placeholder") // Replace with your asset
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200, height: 200)
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(Color.gray, lineWidth: 2))
+                    .shadow(radius: 10)
+                    .accessibilityLabel("App Logo")
+                
+                
+                Text("セルフオーダーへようこそ！") // Welcome to Self Order!
+                    .font(.system(size: 32, weight: .bold, design: .rounded))
+                    .multilineTextAlignment(.center)
+                
+                Spacer()
+                
+                Button(action: {
+                    navigationPath.append(NavigationRoute.menu) // Navigate to Menu screen
+                }) {
+                    Text("注文を始める") // Start Order
+                        .font(.largeTitle)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .padding(.vertical, 15)
+                        .padding(.horizontal, 60)
+                        .background(Color.cusGreen)
+                        .cornerRadius(12)
+                        .shadow(radius: 5)
+                }
+                Spacer()
+                
+                HStack {
+                    Spacer()
+                    Button {
+                        print()
+                    } label: {
+                        HStack {
+                            Image(systemName: "globe") // 地球儀アイコン
+                                .padding(.horizontal, 8)
+                            Text("LANGUAGE") // 例: "JA", "EN"
+                            Spacer()
+                            Image(systemName: "chevron.down")
+                                .padding(.horizontal, 8)
+                        }
+                        .padding()
+                        .background(.ultraThinMaterial, in: Capsule())
+                        .foregroundColor(.primary)
+                        .font(.title)
+                        .shadow(color: .black.opacity(0.2), radius: 3, x: 0, y: 1) // 軽い影
+                    }
+                    .frame(width: 300)
+                }
+                .padding(.trailing, 120)
+                .padding(.bottom, 60)
             }
-            Spacer()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(LinearGradient(gradient: Gradient(colors: [Color.gray.opacity(0.1), Color.gray.opacity(0.2)]), startPoint: .top, endPoint: .bottom).ignoresSafeArea())
+            .navigationBarHidden(true) // Hide navigation bar on the top screen
+            
+            VStack {
+                HStack {
+                    Spacer()
+                    HStack(spacing: 5) {
+                        Image(systemName: "globe") // 地球儀アイコン
+                            .imageScale(.medium)
+                        Text("JA") // 例: "JA", "EN"
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(.ultraThinMaterial, in: Capsule()) // 半透明なカプセル背景
+                    .foregroundColor(.primary) // テキストとアイコンの色（ライト/ダークモード対応）
+                    .font(.caption.weight(.semibold))
+                    .shadow(color: .black.opacity(0.2), radius: 3, x: 0, y: 1) // 軽い影
+                }
+            }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(LinearGradient(gradient: Gradient(colors: [Color.gray.opacity(0.1), Color.gray.opacity(0.2)]), startPoint: .top, endPoint: .bottom).ignoresSafeArea())
-        .navigationBarHidden(true) // Hide navigation bar on the top screen
     }
 }
 
@@ -61,5 +123,5 @@ struct TopView: View {
 
 #Preview {
     TopView(navigationPath: .constant(NavigationPath()))
-         .environmentObject(Order()) // EnvironmentObjectが必要な場合はこれも追加（後述）
+        .environmentObject(Order()) // EnvironmentObjectが必要な場合はこれも追加（後述）
 }
