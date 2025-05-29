@@ -225,13 +225,14 @@ extension MenuView {
                     } label: {
                         VStack {
                             Text(category.rawValue)
+                                .font(.title2.bold())
                                 .foregroundColor(.primary)
                         }
-                        .frame(width: 100)
+                        .frame(width: 140)
                         .padding(16)
                         .overlay {
                             RoundedRectangle(cornerRadius: 40)
-                                .strokeBorder(selectedCategory == category ? Color.accentColor : Color.gray, lineWidth: 2.5)
+                                .strokeBorder(selectedCategory == category ? .cusGreen : Color.gray, lineWidth: 4)
                         }
                     }
                 }
