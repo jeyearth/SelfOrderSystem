@@ -32,25 +32,22 @@ struct MenuView: View {
                         .padding([.top, .leading])
 
                     // Category selection
-                    Picker("カテゴリー", selection: $selectedCategory) {
-                        ForEach(MenuCategory.allCases) { category in
-                            Text(category.rawValue).tag(category)
-                        }
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
-                    .padding(.horizontal)
-                    .padding(.bottom, 10)
+//                    Picker("カテゴリー", selection: $selectedCategory) {
+//                        ForEach(MenuCategory.allCases) { category in
+//                            Text(category.rawValue).tag(category)
+//                        }
+//                    }
+//                    .pickerStyle(SegmentedPickerStyle())
+//                    .padding(.horizontal)
+//                    .padding(.bottom, 10)
+                    
+                    self.customMenuCategorySegmentedControl
+                        .padding()
 
                     // Grid of menu items
                     ScrollView {
                         LazyVGrid(columns: columns, spacing: 20) {
                             ForEach(currentCategoryItems) { item in
-//                                Button(action: {
-//                                    showingItemDetailSheet = item // Show detail sheet for the selected item
-//                                }) {
-//                                    MenuItemViewCell(item: item, showingItemDetailSheet: $showingItemDetailSheet)
-//                                }
-//                                .buttonStyle(PlainButtonStyle()) // Use PlainButtonStyle for custom button appearance
                                 MenuItemViewCell(item: item, showingItemDetailSheet: $showingItemDetailSheet)
                             }
                         }
@@ -215,4 +212,90 @@ struct MenuView: View {
 #Preview {
     MenuView(navigationPath: .constant(NavigationPath()))
          .environmentObject(Order()) // EnvironmentObjectが必要な場合はこれも追加（後述）
+}
+
+extension MenuView {
+    
+    private var customMenuCategorySegmentedControl: some View {
+        VStack {
+            HStack(spacing: 16) {
+                ForEach(MenuCategory.allCases) { category in
+                    Button {
+                        selectedCategory = category
+                    } label: {
+                        VStack {
+                            Text(category.rawValue)
+                                .foregroundColor(.primary)
+                        }
+                        .frame(width: 100)
+                        .padding(16)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 40)
+                                .strokeBorder(selectedCategory == category ? Color.accentColor : Color.gray, lineWidth: 2.5)
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal)
+        }
+        .frame(height: 40)
+    }
+    
+//    private var customOptionSelectView: some View {
+//        VStack {
+//            if let optionGroups = item.optionGroups {
+//                ForEach(optionGroups) { group in
+//                    Text(group.name)
+//                        .frame(maxWidth: .infinity, alignment: .leading)
+//                        .font(.title3)
+//                        .fontWeight(.bold)
+//
+//                    let gridColumns: [GridItem] = [
+//                        .init(.adaptive(minimum: 140, maximum: 260))
+//                    ]
+//
+//                    LazyVGrid(columns: gridColumns, spacing: 10) {
+//                        ForEach(group.options) { option in
+//                            Button(action: {
+//                                // このグループの選択を更新
+//                                withAnimation {
+//                                    pickerSelections[group.id] = option
+//                                }
+//                            }) {
+//                                // カスタムボタンの見た目
+//                                VStack {
+//                                    Text(option.name)
+//                                        .font(.system(size: 14))
+//                                        .lineLimit(2) // 名前の表示行数を制限
+//                                        .fixedSize(horizontal: false, vertical: true) // 縦方向にテキストが伸びるように
+//                                    if option.additionalPrice > 0 {
+//                                        Text("+\(Int(option.additionalPrice))円")
+//                                            .font(.caption)
+//                                    } else if group.options.count == 1 && option.additionalPrice == 0 {
+//                                        // 価格表示なし
+//                                    } else {
+//                                        Text("(+\(Int(option.additionalPrice))円)")
+//                                            .font(.caption)
+//                                    }
+//                                }
+//                                .padding(10) // ボタンのパディングを少し調整
+//                                .frame(maxWidth: .infinity) // グリッドセル内で幅いっぱいに
+//                                .frame(minHeight: 60) // ボタンの最小高さを確保
+//                                .background(isSelected(group: group, option: option) ? Color.clear : Color.clear)
+//                                .foregroundColor(isSelected(group: group, option: option) ? .primary : .primary)
+//                                .cornerRadius(8)
+//                                .overlay(
+//                                    RoundedRectangle(cornerRadius: 12)
+//                                        .stroke(isSelected(group: group, option: option) ? Color.accentColor : Color(UIColor.systemGray3), lineWidth: 2)
+//                                        .strokeBorder(isSelected(group: group, option: option) ? Color.accentColor : .clear, lineWidth: 2.5)
+//                                )
+//                            }
+//                        }
+//                    }
+//                    .padding(.bottom, 24)
+//                }
+//            }
+//        }
+//    }
+    
 }
