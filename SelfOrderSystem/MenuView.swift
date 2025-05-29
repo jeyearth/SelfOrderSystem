@@ -91,13 +91,16 @@ struct MenuView: View {
                                         VStack(alignment: .leading){
                                             ForEach(orderItem.selectedOptions){ option in
                                                 Text("+ \(option.name)")
+                                                    .frame(maxWidth: .infinity, alignment: .leading)
                                                     .font(.caption)
                                                     .foregroundColor(.gray)
                                             }
                                         }
-                                        Spacer()
+                                        .frame(width: 150)
+                                        .padding(.trailing, 20)
                                         Text("x \(orderItem.quantity)")
-                                            .padding(.horizontal, 20)
+                                            .padding(.horizontal, 8)
+                                        Spacer()
                                         (Text("¥")
                                             .font(.title3.bold())
                                         + Text("\(Int(orderItem.totalPrice))")
