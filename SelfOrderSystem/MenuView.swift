@@ -82,43 +82,71 @@ struct MenuView: View {
                     } else {
                         List {
                             ForEach(order.items) { orderItem in
-                                VStack {
-                                    Text("\(orderItem.menuItem.name)")
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .font(.headline)
-                                        .fontWeight(.bold)
-                                    HStack {
-                                        VStack(alignment: .leading){
-                                            ForEach(orderItem.selectedOptions){ option in
-                                                Text("+ \(option.name)")
-                                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                                    .font(.caption)
-                                                    .foregroundColor(.gray)
+                                HStack {
+                                    Image(orderItem.menuItem.imageName)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 60)
+                                    VStack {
+                                        Text("\(orderItem.menuItem.name)")
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                            .font(.headline)
+                                            .fontWeight(.bold)
+                                        HStack {
+                                            VStack(alignment: .leading){
+                                                if orderItem.selectedOptions.isEmpty {
+                                                    Text("オプションなし")
+                                                        .font(.caption)
+                                                        .foregroundColor(.gray)
+                                                    Spacer()
+                                                } else {
+                                                    ForEach(orderItem.selectedOptions){ option in
+                                                        Text("+ \(option.name)")
+                                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                                            .font(.caption)
+                                                            .foregroundColor(.gray)
+                                                    }
+                                                    Spacer()
+                                                }
+                                                HStack {
+                                                    Text("x \(orderItem.quantity)")
+                                                        .padding(.horizontal, 8)
+                                                    Spacer()
+                                                    (Text("¥")
+                                                        .font(.headline.bold())
+                                                     + Text("\(Int(orderItem.totalPrice))")
+                                                        .font(.title2.bold())
+                                                    )
+                                                }
                                             }
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                            .padding(.trailing, 10)
                                         }
-                                        .frame(width: 150)
-                                        .padding(.trailing, 20)
-                                        Text("x \(orderItem.quantity)")
-                                            .padding(.horizontal, 8)
-                                        Spacer()
-                                        (Text("¥")
-                                            .font(.title3.bold())
-                                        + Text("\(Int(orderItem.totalPrice))")
-                                            .font(.title.bold())
-                                         )
                                     }
+                                    .frame(maxHeight: 90)
+                                    Button(action: {
+                                        print("Delete item: \(orderItem.menuItem.name)")
+                                        withAnimation {
+                                            order.removeItem(id: orderItem.id)
+                                        }
+                                    }) {
+                                        Image(systemName: "trash.fill") // アイコン変更、fillで塗りつぶし
+                                            .font(.title2) // アイコンサイズ調整
+                                            .foregroundColor(.red)
+                                            .padding(.horizontal, 10)
+                                    }
+                                    .buttonStyle(BorderlessButtonStyle())
                                 }
-                                .padding(.all, 10)
-                                .frame(maxWidth: .infinity, minHeight: 90)
-                                .background(Color.white.opacity(0.3))
-                                .cornerRadius(10)
+                                .padding(12)
+                                .frame(maxWidth: .infinity, minHeight: 100)
+                                .background(Color.white.opacity(0.8))
+                                .cornerRadius(12)
                                 .listRowBackground(Color.clear)
                                 .listRowSeparator(.hidden)
                             }
-                            .onDelete(perform: order.removeItem) // Allow swipe to delete
+//                            .onDelete(perform: order.removeItem) // Allow swipe to delete
                         }
-                        .listStyle(.plain)
-//                        .listStyle(PlainListStyle()) // Use PlainListStyle for cleaner look
+                        .listStyle(PlainListStyle())
                     }
 
                     Divider()
