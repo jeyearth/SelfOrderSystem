@@ -14,7 +14,7 @@ struct WaitingForPaymentView: View {
     let paymentType: PaymentType
     let orderTotal: Double
 
-    @State private var countdown: Int = 5 // Timer for simulated processing
+    @State private var countdown: Int = 3 // Timer for simulated processing
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     var body: some View {
